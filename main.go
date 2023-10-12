@@ -1,9 +1,15 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"github.com/nxtrace/NTrace-core/util"
+	"log"
+	"net"
 	"net/http"
+	"net/url"
+	"os"
 	"time"
 
 	"github.com/TylerBrock/colorjson"
@@ -35,8 +41,31 @@ type IpInfo struct {
 }
 
 func main() {
+	var fastIp string
+	host, port := util.GetHostAndPort()
+	// 如果 host 是一个 IP 使用默认域名
+	if valid := net.ParseIP(host); valid != nil {
+		fastIp = host
+		host = "api.leo.moe"
+	} else {
+		// 默认配置完成，开始寻找最优 IP
+		fastIp = util.GetFastIP(host, port, true)
+	}
+	jwtToken, ua := util.EnvToken, []string{"Privileged Client"}
+	err := error(nil)
+	if jwtToken == "" {
+		if util.GetPowProvider() == "" {
+			jwtToken, err = pow.GetToken(fastIp, host, port)
+		} else {
+			jwtToken, err = pow.GetToken(util.GetPowProvider(), util.GetPowProvider(), port)
+		}
+		if err != nil {
+			log.Println(err)
+			os.Exit(1)
+		}
+		ua = []string{"wscat-go"}
+	}
 	fmt.Println("PoW Start")
-	jwtToken, err := pow.GetToken()
 
 	if err != nil {
 		fmt.Println("连接失败:", err)
@@ -45,9 +74,20 @@ func main() {
 
 	requestHeader := http.Header{
 		"Authorization": []string{"Bearer " + jwtToken},
+		"Host":          []string{host},
+		"User-Agent":    ua,
 	}
+	dialer := websocket.DefaultDialer
+	dialer.TLSClientConfig = &tls.Config{
+		ServerName: host,
+	}
+	proxyUrl := util.GetProxy()
+	if proxyUrl != nil {
+		dialer.Proxy = http.ProxyURL(proxyUrl)
+	}
+	u := url.URL{Scheme: "wss", Host: fastIp + ":" + port, Path: "/v3/ipGeoWs"}
 
-	c, _, err := websocket.DefaultDialer.Dial("wss://api.leo.moe/v3/ipGeoWs", requestHeader)
+	c, _, err := websocket.DefaultDialer.Dial(u.String(), requestHeader)
 	if err != nil {
 		fmt.Println("连接失败:", err)
 		return
