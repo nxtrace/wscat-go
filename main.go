@@ -52,7 +52,12 @@ func main() {
 		fmt.Println("连接失败:", err)
 		return
 	}
-	defer c.Close()
+	defer func(c *websocket.Conn) {
+		err := c.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(c)
 
 	fmt.Println("LeoMoeAPI V2 连接成功！")
 
@@ -71,7 +76,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer rl.Close()
+	defer func(rl *readline.Instance) {
+		err := rl.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(rl)
 
 	for {
 		line, err := rl.Readline()
@@ -104,7 +114,10 @@ func main() {
 		// color.Magenta("Owner: %s", ipInfo.Owner)
 
 		var ipObj map[string]interface{}
-		json.Unmarshal([]byte(message), &ipObj)
+		err = json.Unmarshal(message, &ipObj)
+		if err != nil {
+			fmt.Println("JSON解析失败:", err)
+		}
 
 		// New colorjson Formatter
 		f := colorjson.NewFormatter()
