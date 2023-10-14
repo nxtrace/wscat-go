@@ -34,7 +34,7 @@ require (
 require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/nxtrace/NTrace-core v1.1.8-0.20231012115257-2974002c0273
+	github.com/nxtrace/NTrace-core v1.2.3
 	github.com/tsosunchia/powclient v0.1.4
 	golang.org/x/sys v0.13.0 // indirect
 )
