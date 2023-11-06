@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/TylerBrock/colorjson v0.0.0-20200706003622-8a50f05110d2
 	github.com/chzyer/readline v1.5.1
-	github.com/gorilla/websocket v1.5.0
+	github.com/gorilla/websocket v1.5.1
 )
 
 require (
@@ -26,6 +26,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
