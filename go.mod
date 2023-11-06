@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/fatih/color v1.15.0 // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
@@ -33,8 +33,8 @@ require (
 
 require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/nxtrace/NTrace-core v1.2.3
+	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/nxtrace/NTrace-core v1.2.4
 	github.com/tsosunchia/powclient v0.1.4
 	golang.org/x/sys v0.13.0 // indirect
 )
